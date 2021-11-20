@@ -1,13 +1,18 @@
 const express = require('express')
 const bodyParser  = require('body-parser');
-
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
+const routes = require('./routes/routes');
+
+// API Prefix
+app.use("/api/v1", routes);
 
 app.get('/', (req, res) => {
     res.send('Hello World! demo')
-  })
+})
 
   app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`WorkersDeck Started at http://localhost:${port}`)
   })
