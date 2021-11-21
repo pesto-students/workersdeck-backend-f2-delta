@@ -10,9 +10,9 @@ const routes = require('./routes/routes');
 app.use("/api/v1", routes);
 
 app.get('/', (req, res) => {
-    res.send('Hello World! demo')
+    res.send('WorkersDeck Is Live')
 })
 
-  app.listen(port, () => {
+app.listen(port, () => {
     console.log(`WorkersDeck Started at http://localhost:${port}`)
-  })
+})
