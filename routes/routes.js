@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
+const { verifySignUp } = require("../middlewares");
 
 
 router.get('/', (req, res,next) => {
@@ -12,9 +13,26 @@ router.get('/', (req, res,next) => {
 
 //app.route('/user').get();
 
-// Authentication API 
+// User Authentication API 
+router.use(function(req, res, next) {
+
+    res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+      );
+      next();
+
+      router.post(
+        "/user/signup",
+        [
+            verifySignUp.checkDuplicateUsernameOrEmail,
+        ],
+        authController.signup
+      );
+
+});
 router.post('/user/signin', authController.signin);
-router.post('/user/signup', authController.signup);
+//router.post('/user/signup', authController.signup);
 router.post('/user/resetpassword', authController.resetPassword);
 router.post('/user/recoverPassword', authController.recoverPassword);
 
