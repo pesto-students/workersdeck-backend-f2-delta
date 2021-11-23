@@ -15,21 +15,18 @@ router.get('/', (req, res,next) => {
 
 // User Authentication API 
 router.use(function(req, res, next) {
-
     res.header(
         "Access-Control-Allow-Headers",
         "x-access-token, Origin, Content-Type, Accept"
       );
       next();
-
       router.post(
         "/user/signup",
         [
-            verifySignUp.checkDuplicateUsernameOrEmail,
+            verifySignUp.checkDuplicateMobileOrEmail,
         ],
         authController.signup
       );
-
 });
 router.post('/user/signin', authController.signin);
 //router.post('/user/signup', authController.signup);
