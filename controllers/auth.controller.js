@@ -24,6 +24,7 @@ var bcrypt = require("bcryptjs");
 const signup = (req,res) => {
     console.log(req.body);
     const { fullname,email, mobile_no, password } = req.body;
+    process.exit();
 
     User.create({
         fullname: fullname,
@@ -43,7 +44,7 @@ const signup = (req,res) => {
 };
 
 const signin = (req,res) => {
-
+    console.log(req.body.email);
     res.json({
         msg:"signin() Api is working",
         status:200
