@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.users;
 
 
-checkDuplicateUsernameOrEmail = (req, res, next) => {
+checkDuplicateMobileOrEmail = (req, res, next) => {
     // Username
     User.findOne({
       where: {
@@ -35,7 +35,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
   };
 
   const verifySignUp = {
-    checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
+    checkDuplicateMobileOrEmail: checkDuplicateMobileOrEmail,
   };
   
   module.exports = verifySignUp;
