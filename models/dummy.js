@@ -22,7 +22,26 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false
       },
-
+      verification_key: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE
+      },
+      verified:{
+        type: Sequelize.BOOLEAN, 
+        allowNull: false, 
+        defaultValue: false,
+     },
+     role: {
+      type: Sequelize.CHAR(1)
+    }
     });
   
     return User;

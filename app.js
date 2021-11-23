@@ -6,6 +6,7 @@ const port = process.env.PORT || 8080;
 const routes = require('./routes/routes');
 require("dotenv").config();
 const app = express();
+// const sequelize = new Sequelize('postgres://postgres:password@example.com:5432/workersdeck');
 
 // Cors
 var corsOptions = {
