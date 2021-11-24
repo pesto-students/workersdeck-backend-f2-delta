@@ -14,22 +14,22 @@ router.get('/', (req, res,next) => {
 //app.route('/user').get();
 
 // User Authentication API 
-router.use(function(req, res, next) {
-    res.header(
-        "Access-Control-Allow-Headers",
-        "x-access-token, Origin, Content-Type, Accept"
-      );
-      next();
-      router.post(
-        "/user/signup",
-        [
-            verifySignUp.checkDuplicateMobileOrEmail,
-        ],
-        authController.signup
-      );
-});
+// router.use(function(req, res, next) {
+//     res.header(
+//         "Access-Control-Allow-Headers",
+//         "x-access-token, Origin, Content-Type, Accept"
+//       );
+//       next();
+    
+// });
+router.post(
+    "/user/signup",
+    [
+        verifySignUp.checkDuplicateMobileOrEmail,
+    ],
+    authController.signup
+  );
 router.post('/user/signin', authController.signin);
-//router.post('/user/signup', authController.signup);
 router.post('/user/resetpassword', authController.resetPassword);
 router.post('/user/recoverPassword', authController.recoverPassword);
 

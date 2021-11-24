@@ -2,11 +2,17 @@ const express = require('express')
 const bodyParser  = require('body-parser');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const expressValidator = require('express-validator');
+const multer = require('multer');
 const port = process.env.PORT || 8080;
 const routes = require('./routes/routes');
 require("dotenv").config();
 const app = express();
-// const sequelize = new Sequelize('postgres://postgres:password@example.com:5432/workersdeck');
+//var upload = multer();
+
+// Validator
+// app.use(expressValidator())
+
 
 // Cors
 var corsOptions = {
@@ -15,11 +21,10 @@ var corsOptions = {
 app.use(cors(corsOptions));
 // End Cors configration
 
-// parse requests of content-type - application/json
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// parse application/json
 app.use(bodyParser.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-
 
 // API Prefix
 app.use("/api/v1", routes);

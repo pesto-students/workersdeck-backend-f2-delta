@@ -23,9 +23,10 @@ var bcrypt = require("bcryptjs");
 
 const signup = (req,res) => {
     console.log(req.body);
-    const { fullname,email, mobile_no, password } = req.body;
+    //const { fullname,email, mobile_no, password } = req.body;
+    //const verificationkey = this.makeid(12);
+   // console.log(verificationkey);
     process.exit();
-
     User.create({
         fullname: fullname,
         email: email,
@@ -64,6 +65,17 @@ const recoverPassword = (req,res) => {
         msg:"recoverPassword() Api is working",
         status:200
     });
+}
+
+const makeid = (length) => {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
 }
 
 module.exports = {
