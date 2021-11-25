@@ -30,8 +30,7 @@ router.post(
     authController.signup
   );
 router.post('/user/signin', authController.signin);
-router.post('/user/resetpassword', authController.resetPassword);
-router.post('/user/recoverPassword', authController.recoverPassword);
+
 
 
 module.exports = router;

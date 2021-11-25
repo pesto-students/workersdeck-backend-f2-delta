@@ -23,10 +23,9 @@ var bcrypt = require("bcryptjs");
 
 const signup = (req,res) => {
     console.log(req.body);
-    //const { fullname,email, mobile_no, password } = req.body;
-    //const verificationkey = this.makeid(12);
-   // console.log(verificationkey);
-    process.exit();
+    const { fullname,email, mobile_no, password } = req.body;
+    const verificationkey = this.makeid(12);
+    console.log(verificationkey);
     User.create({
         fullname: fullname,
         email: email,
@@ -37,35 +36,52 @@ const signup = (req,res) => {
           }
       );
 
-    // res.json({
-    //     msg:"Signup Api is working",
-    //     status:200
-    // });
-
 };
 
 const signin = (req,res) => {
-    console.log(req.body.email);
-    res.json({
-        msg:"signin() Api is working",
-        status:200
-    });
+    const {email,password} = req.body;
+    User.findOne({
+        where: {
+          username: req.body.username
+        }
+      }).then(user => {
+            // If user not found
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+              }
+
+            //   Check password
+            var passwordIsValid = bcrypt.compareSync(
+                password,
+                user.password
+              );
+
+              if (!passwordIsValid) {
+                return res.status(401).send({
+                  accessToken: null,
+                  message: "Invalid Password!"
+                });
+              }
+              
+              var token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 86400 // 24 hours
+              });
+
+            //   If successfully signed then return response
+
+            res.status(200).send({
+                id: user.id,
+                fullname: user.fullname,
+                email: user.email,
+                accessToken: token
+            });
+      }).catch(function (err) {
+        res.status(500).send({ message: err.message });
+      })
+
 
 }
 
-const resetPassword = (req,res) => {
-    res.json({
-        msg:"resetPassword()  Api is working",
-        status:200
-    });
-}
-
-const recoverPassword = (req,res) => {
-    res.json({
-        msg:"recoverPassword() Api is working",
-        status:200
-    });
-}
 
 const makeid = (length) => {
     var result           = '';
@@ -81,6 +97,4 @@ const makeid = (length) => {
 module.exports = {
     signup,
     signin,
-    resetPassword,
-    recoverPassword
 }
