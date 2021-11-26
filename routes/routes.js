@@ -24,8 +24,9 @@ router.post(
 
 
 // listing apis
-
-router.get('/listing',listingController.showWorkersListByPincode);
+router.get('/cities',listingController.getCities);
+router.get('/categories',listingController.getCategories);
+router.get('/listing',listingController.showWorkersLists);
 
 
 module.exports = router;

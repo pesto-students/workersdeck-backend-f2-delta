@@ -31,7 +31,11 @@ const signup = (req,res) => {
         mobile_no: mobile_no,
         verification_key: makeid(12),
       }).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({ 
+              status:true,
+              message: "User was registered successfully!",
+              data:null,
+             });
           }
       );
 
@@ -46,7 +50,11 @@ const signin = (req,res) => {
       }).then(user => {
             // If user not found
             if (!user) {
-                return res.status(404).send({ message: "User Not found." });
+                return res.status(404).send({ 
+                  status: false,
+                  message: "User Not found",
+                  data:null 
+                });
               }
 
             //   Check password
@@ -57,8 +65,9 @@ const signin = (req,res) => {
 
               if (!passwordIsValid) {
                 return res.status(401).send({
-                  accessToken: null,
-                  message: "Invalid Password!"
+                  status:false,
+                  message: "Invalid Password!",
+                  data: null
                 });
               }
               
@@ -68,14 +77,24 @@ const signin = (req,res) => {
 
             //   If successfully signed then return response
 
+
             res.status(200).send({
+              status:true,
+              message: "Login Succesfull",
+              data: {
                 id: user.id,
                 fullname: user.fullname,
                 email: user.email,
                 accessToken: token
+              }
+               
             });
       }).catch(function (err) {
-        res.status(500).send({ message: err.message });
+        res.status(500).send({ 
+          status:false,
+          message: err.message ,
+          data:null,
+        });
       })
 
 

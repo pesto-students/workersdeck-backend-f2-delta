@@ -12,6 +12,10 @@ module.exports = {
         type: Sequelize.CHAR(6),
         allowNull: false,
       },
+      servicable_city:{
+        type: Sequelize.CHAR(20),
+        defaultValue: "Pune",
+      },
       category_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
