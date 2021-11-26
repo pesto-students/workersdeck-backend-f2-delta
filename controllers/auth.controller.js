@@ -22,15 +22,14 @@ var bcrypt = require("bcryptjs");
 // };
 
 const signup = (req,res) => {
-    console.log(req.body);
     const { fullname,email, mobile_no, password } = req.body;
-    const verificationkey = this.makeid(12);
-    console.log(verificationkey);
+    const verificationkey = makeid(12);
     User.create({
         fullname: fullname,
         email: email,
         password: bcrypt.hashSync(password, 8),
-        mobile_no: mobile_no
+        mobile_no: mobile_no,
+        verification_key: makeid(12),
       }).then(() => {
             res.send({ message: "User was registered successfully!" });
           }
@@ -42,7 +41,7 @@ const signin = (req,res) => {
     const {email,password} = req.body;
     User.findOne({
         where: {
-          username: req.body.username
+          email: email
         }
       }).then(user => {
             // If user not found
@@ -94,7 +93,12 @@ const makeid = (length) => {
    return result;
 }
 
+const myprofile = (req,res) => {
+
+}
+
 module.exports = {
     signup,
     signin,
+    myprofile,
 }

@@ -1,27 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
-const { verifySignUp } = require("../middlewares");
+const listingController = require('../controllers/listing.controller');
+const { verifySignUp,authJwt } = require("../middlewares");
 
 
-router.get('/', (req, res,next) => {
-    res.json({
-        msg:"Api is working",
-        status:200
-    });
-});
-
-//app.route('/user').get();
-
-// User Authentication API 
-// router.use(function(req, res, next) {
-//     res.header(
-//         "Access-Control-Allow-Headers",
-//         "x-access-token, Origin, Content-Type, Accept"
-//       );
-//       next();
-    
-// });
+// Authentication API
 router.post(
     "/user/signup",
     [
@@ -30,7 +14,18 @@ router.post(
     authController.signup
   );
 router.post('/user/signin', authController.signin);
+router.post(
+  "/user/myprofile",
+  [
+    authJwt.verifyToken,
+  ],
+  authController.myprofile
+);
 
+
+// listing apis
+
+router.get('/listing',listingController.showWorkersListByPincode);
 
 
 module.exports = router;

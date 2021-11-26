@@ -9,16 +9,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       serviceable_pincode: {
-        type: Sequelize.CHAR(4),
+        type: Sequelize.CHAR(6),
         allowNull: false,
       },
       category_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'categories', key: 'id' }
+        allowNull: false,
       },
       subcategory_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'categories', key: 'id' }
+        allowNull: false,
+      },
+      profile_pic: {
+        type: Sequelize.STRING,
+        defaultValue: 'http://lorempixel.com/400/200/sports/Dummy-Text/'
       },
       createdAt: {
         allowNull: false,

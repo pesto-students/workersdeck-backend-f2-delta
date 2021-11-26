@@ -1,31 +1,42 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('SubCategories', {
+    await queryInterface.createTable('Addresses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      category_id:{
+      uid:{
         type: Sequelize.INTEGER,
+        references: { model: 'users', key: 'id' }
+      },
+      address: {
+        type: Sequelize.STRING
+      },
+      type: {
+        type: Sequelize.ENUM(['home','office','other']),
+      },
+      pin_code: {
+        type: Sequelize.CHAR(6),
         allowNull: false,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('SubCategories');
+    await queryInterface.dropTable('Addresses');
   }
 };
