@@ -31,9 +31,18 @@ const getCities = (req,res) => {
 
 const getCategories = (req,res) => {
     Categories.findAll({
-
     }).then(result => {
-        console.log(result);
+        return res.status(200).send({
+            status:true,
+            message: "Categories fetched successfully",
+            data: result
+          });
+    }).catch(err => {
+        return res.status(500).send({
+            status:false,
+            message: err,
+            data: result
+          });
     });
 }
 

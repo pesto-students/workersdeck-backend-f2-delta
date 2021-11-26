@@ -7,7 +7,7 @@ module.exports = {
      *
      * Example:
      */
-      await queryInterface.bulkInsert('categories', [
+      await queryInterface.bulkInsert('Categories', [
         {
         name: 'Painter',
         createdAt: new Date(),
@@ -49,6 +49,6 @@ module.exports = {
      * Example:
       
      */
-     await queryInterface.bulkDelete('categories', null, {});
+     await queryInterface.bulkDelete('Categories', null, {});
   }
 };

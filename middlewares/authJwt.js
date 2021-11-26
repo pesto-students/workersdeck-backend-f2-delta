@@ -4,7 +4,8 @@ const db = require("../models");
 const User = db.users;
 
 verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+  const token = req.headers.authorization;
+    // let token = req.headers["x-access-token"];
   
     if (!token) {
       return res.status(403).send({
@@ -26,9 +27,10 @@ verifyToken = (req, res, next) => {
       next();
     });
   };
-
+  
 
   const authJwt = {
     verifyToken: verifyToken,
   };
+
   module.exports = authJwt;

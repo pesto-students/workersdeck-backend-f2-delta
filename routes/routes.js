@@ -14,12 +14,16 @@ router.post(
     authController.signup
   );
 router.post('/user/signin', authController.signin);
-router.post(
+router.get(
   "/user/myprofile",
   [
     authJwt.verifyToken,
   ],
   authController.myprofile
+);
+router.post(
+  "/user/reset-password",
+  authController.resetPassword
 );
 
 
