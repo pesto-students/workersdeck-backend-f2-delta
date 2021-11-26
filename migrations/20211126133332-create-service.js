@@ -8,8 +8,42 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      service_name: {
         type: Sequelize.STRING
+      },
+      service_charge: {
+        type: Sequelize.DECIMAL(10, 2),
+        defaultValue: 0
+      },
+      service_description: {
+        type: Sequelize.STRING,
+      },
+      start_time: {
+        type: Sequelize.DATE,
+        //
+      },
+      close_time: {
+        type: Sequelize.DATE,
+      },
+      estimate_time: {
+        type: Sequelize.STRING,
+      },
+      category_id: {
+        type: Sequelize.INTEGER
+      },
+      subcategory_id: {
+        type: Sequelize.INTEGER
+      },
+      servicable_city_id: {
+        type: Sequelize.INTEGER
+      },
+      servicable_pincode : {
+        type: Sequelize.CHAR(6),
+        allowNull: true,
+      },
+      wid : {
+        type: Sequelize.INTEGER,
+        references: { model: 'WorkersProfiles', key: 'id' }
       },
       createdAt: {
         allowNull: false,

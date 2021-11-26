@@ -28,6 +28,10 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: 'http://lorempixel.com/400/200/sports/Dummy-Text/'
       },
+      availablity: {
+        type: Sequelize.CHAR(1),
+        defaultValue: 1
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -35,7 +39,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      uid: {
+        type: Sequelize.INTEGER,
+        references: { model: 'users', key: 'id' }
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
