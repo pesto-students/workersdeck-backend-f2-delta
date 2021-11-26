@@ -13,7 +13,13 @@ const app = express();
 // Validator
 // app.use(expressValidator())
 
-
+app.use(function(req, res, next) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
 // Cors
 var corsOptions = {
   origin: " http://localhost:${port}"

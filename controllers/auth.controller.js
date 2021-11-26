@@ -9,18 +9,6 @@ var bcrypt = require("bcryptjs");
 
 
 
-// exports.signup = (req, res, next) => {
-//     const errors = validationResult(req);
-//     console.log('isErrors', errors.isEmpty());
-//     const { fullname,email, phone, password } = req.body;
-// };
-
-// const authController = {
-//     signup: (req, res) => {
-//         console.log("req.body", req.body);
-//     },
-// };
-
 const signup = (req,res) => {
     const { fullname,email, mobile_no, password } = req.body;
     const verificationkey = makeid(12);
@@ -30,6 +18,7 @@ const signup = (req,res) => {
         password: bcrypt.hashSync(password, 8),
         mobile_no: mobile_no,
         verification_key: makeid(12),
+        is_verified : 1,
       }).then(() => {
             res.send({ 
               status:true,
@@ -47,7 +36,7 @@ const signin = (req,res) => {
         where: {
           email: email
         }
-      }).then(user => {
+      }).then(async user => {
             // If user not found
             if (!user) {
                 return res.status(404).send({ 
@@ -74,17 +63,15 @@ const signin = (req,res) => {
               var token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400 // 24 hours
               });
-
             //   If successfully signed then return response
-
-
             res.status(200).send({
               status:true,
-              message: "Login Succesfull",
+              message: "Login Succesfuly",
               data: {
                 id: user.id,
                 fullname: user.fullname,
                 email: user.email,
+                role: user.role,
                 accessToken: token
               }
                
@@ -100,6 +87,39 @@ const signin = (req,res) => {
 
 }
 
+const resetPassword = (req, res) => {
+
+  User.findOne({
+    where: {
+      email: email
+    }
+  }).then(result => {
+    // if not found
+
+    if (!result) {
+      return res.status(404).send({ 
+        status: false,
+        message: "Email Not found",
+        data:null 
+      });
+    }else{
+      return res.status(200).send({ 
+        status: true,
+        message: "OTP Send to your email.",
+        data:null 
+      });
+    }
+  }).catch(function(err){
+
+    return res.status(500).send({ 
+      status: false,
+      message: "Something went wrong",
+      data:null 
+    });
+
+  });
+}
+
 
 const makeid = (length) => {
     var result           = '';
@@ -113,11 +133,28 @@ const makeid = (length) => {
 }
 
 const myprofile = (req,res) => {
+  const uid = req.userId;
+  User.findOne({
+    where: {
+      id: uid
+    },
+    attributes: {
+      exclude: ['password']
+  }
+  }).then(result => {
 
+    return res.status(200).send({ 
+      status: true,
+      message: "User Details Fetch Succesfuly",
+      data:result 
+    });
+    
+  });
 }
 
 module.exports = {
     signup,
     signin,
     myprofile,
+    resetPassword
 }

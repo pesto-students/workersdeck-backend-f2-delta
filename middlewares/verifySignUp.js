@@ -21,7 +21,9 @@ checkDuplicateMobileOrEmail = (req, res, next) => {
     }).then(user => {
       if (user) {
         res.status(400).send({
-          message: "Failed! Mobile No. is already in use!"
+          status: false,
+          message: "Failed! Mobile No. is already in use!",
+          data: null
         });
         return;
       }
@@ -34,11 +36,12 @@ checkDuplicateMobileOrEmail = (req, res, next) => {
       }).then(user => {
         if (user) {
           res.status(400).send({
-            message: "Failed! Email is already in use!"
+            status: false,
+            message: "Failed! Email is already in use!",
+            data: null
           });
           return;
         }
-  
         next();
       });
     });
