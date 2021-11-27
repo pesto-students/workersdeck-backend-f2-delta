@@ -3,7 +3,7 @@ const router = express.Router();
 const authController = require('../controllers/auth.controller');
 const listingController = require('../controllers/listing.controller');
 const workersController = require('../controllers/workers.controller');
-const { verifySignUp,authJwt,workerSignup } = require("../middlewares");
+const { verifySignUp,authJwt,workerSignup,isWorker } = require("../middlewares");
 
 
 // Authentication API
@@ -38,7 +38,15 @@ router.post('/worker/signup',
 workersController.signup
 );
 
-// listing apis
+// Service apis
+router.post('/worker/createservice',
+[
+  authJwt.verifyToken,
+  isWorker.isWorker
+],
+workersController.CreateService
+);
+
 router.get('/cities',listingController.getCities);
 router.get('/categories',listingController.getCategories);
 router.get('/listing',listingController.showWorkersLists);

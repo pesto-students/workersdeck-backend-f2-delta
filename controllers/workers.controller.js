@@ -46,11 +46,11 @@ const signup = (req,res) => {
 
 };
 
-const listService = (req,res) => {
-
+const CreateService = (req,res) => {
+    console.log("Fall to createService controller");
 };
 
 module.exports = {
     signup,
-    listService
+    CreateService
 }
