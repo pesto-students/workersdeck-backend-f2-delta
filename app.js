@@ -10,8 +10,6 @@ require("dotenv").config();
 const app = express();
 //var upload = multer();
 
-// Validator
-// app.use(expressValidator())
 
 app.use(function(req, res, next) {
   res.header(

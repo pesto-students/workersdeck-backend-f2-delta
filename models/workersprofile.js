@@ -14,7 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   WorkersProfile.init({
-    pincode: DataTypes.STRING
+
+    servicable_pincode: DataTypes.CHAR(6),
+    servicable_city: DataTypes.CHAR(20),
+    category_id: DataTypes.INTEGER,
+    subcategory_id: DataTypes.INTEGER,
+    profile_pic: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'WorkersProfile',

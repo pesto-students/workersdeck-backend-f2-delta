@@ -4,29 +4,37 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.users;
 const Op = db.Sequelize.Op;
+const otp = require('../libraries/otp');
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 
 
 const signup = (req,res) => {
+  console.log(otp);
     const { fullname,email, mobile_no, password } = req.body;
-    const verificationkey = makeid(12);
     User.create({
         fullname: fullname,
         email: email,
         password: bcrypt.hashSync(password, 8),
         mobile_no: mobile_no,
-        verification_key: makeid(12),
+        verification_key: otp.makeid(12),
         is_verified : 1,
       }).then(() => {
-            res.send({ 
+              return res.status(200).send({
               status:true,
               message: "User was registered successfully!",
               data:null,
              });
           }
-      );
+      ).catch(err => {
+        return res.status(500).send({
+          status:false,
+          message: err,
+          data:null,
+         });
+
+      });
 
 };
 
@@ -120,17 +128,6 @@ const resetPassword = (req, res) => {
   });
 }
 
-
-const makeid = (length) => {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
- charactersLength));
-   }
-   return result;
-}
 
 const myprofile = (req,res) => {
   const uid = req.userId;

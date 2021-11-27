@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
 const listingController = require('../controllers/listing.controller');
-const { verifySignUp,authJwt } = require("../middlewares");
+const workersController = require('../controllers/workers.controller');
+const { verifySignUp,authJwt,workerSignup } = require("../middlewares");
 
 
 // Authentication API
@@ -26,6 +27,16 @@ router.post(
   authController.resetPassword
 );
 
+// Workers api
+router.post('/worker/signup',
+[
+  verifySignUp.checkDuplicateMobileOrEmail,
+  workerSignup.validateCity,
+  workerSignup.validateCategory,
+  workerSignup.validateSubCategory,
+],
+workersController.signup
+);
 
 // listing apis
 router.get('/cities',listingController.getCities);

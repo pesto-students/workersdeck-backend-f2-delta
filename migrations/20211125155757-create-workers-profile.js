@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      serviceable_pincode: {
+      servicable_pincode: {
         type: Sequelize.CHAR(6),
         allowNull: false,
       },
