@@ -9,7 +9,10 @@ checkDuplicateMobileOrEmail = (req, res, next) => {
 
     if (!(fullname && email && password && mobile_no)) {
       res.status(400).send(
-        { message : 'Please Check All Fields'}
+        {  status: false,
+          message : 'Please Check All Fields',
+          data:null
+        }
         );
       return;
     }
