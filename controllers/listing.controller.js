@@ -6,8 +6,6 @@ const User = db.users;
 const City = db.City;
 const Categories = db.Categories;
 const Op = db.Sequelize.Op;
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
 
 const getCities = (req,res) => {
     City.findAll({
@@ -47,7 +45,7 @@ const getCategories = (req,res) => {
 }
 
 const showWorkersLists = (req,res) => {
-        console.log(req.body.pin_code);
+    const {city,pincode} = req.query;
 };
 
 

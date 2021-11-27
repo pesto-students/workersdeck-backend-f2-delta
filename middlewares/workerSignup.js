@@ -6,27 +6,7 @@ const City = db.City;
 const Category = db.Category;
 const Subcategory = db.SubCategories;
 
-const userValidationRules = () => {
-    return [
-    body('fullname','Full name is required'),
-      body('email').isEmail(),
-      body('password').isLength({ min: 8 }),
-    ]
-  }
 
-const validateworker = (req,res,next) =>{
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        return next();
-    };
-    const extractedErrors = [];
-    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-    return res.status(422).json({
-    status:false,
-    msg: extractedErrors,
-    data:null
-    });
-}
 
 const validateCity = (req,res,next) =>{
 
@@ -81,11 +61,9 @@ const validateSubCategory = (req,res,next) =>{
 
 
 const workerSignup = {
-    validateworker: validateworker,
-    userValidationRules:  userValidationRules,
-    validateCity:validateCity,
-    validateCategory:validateCategory,
-    validateSubCategory:validateSubCategory
+    validateCity,
+    validateCategory,
+    validateSubCategory
   };
   
   module.exports = workerSignup;

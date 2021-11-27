@@ -1,16 +1,11 @@
-// const express = require('express');
-// const { check, validationResult, body } = require('express-validator');
 const db = require("../models");
-const config = require("../config/auth.config");
-const otp = require('../libraries/otp');
-const getWID = require('../libraries/getWID');
+const otp = require('../utils/otp');
+const getWID = require('../utils/getWID');
 const User = db.users;
 const Worker = db.WorkersProfile;
 const Service = db.Service;
 const Op = db.Sequelize.Op;
-var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const moment = require('moment');
 
 
 const signup = (req,res) => {

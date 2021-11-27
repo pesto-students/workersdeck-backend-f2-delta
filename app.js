@@ -1,9 +1,8 @@
 const express = require('express')
 const bodyParser  = require('body-parser');
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const expressValidator = require('express-validator');
-const multer = require('multer');
+//const multer = require('multer');
+const morgan = require('morgan');
 const port = process.env.PORT || 8080;
 const routes = require('./routes/routes');
 require("dotenv").config();
@@ -24,19 +23,18 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 // End Cors configration
-
+app.use(morgan('tiny'));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // parse application/json
 app.use(bodyParser.json());
-
 // API Prefix
 app.use("/api/v1", routes);
 
+// Routes
 app.get('/', (req, res) => {
     res.send('WorkersDeck Is Running')
-})
-
+});
 app.listen(port, () => {
     console.log(`WorkersDeck Started at http://localhost:${port}`)
 })
