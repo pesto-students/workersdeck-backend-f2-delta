@@ -3,11 +3,15 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const otp = require('../libraries/otp');
+const getWID = require('../libraries/getWID');
 const User = db.users;
 const Worker = db.WorkersProfile;
+const Service = db.Service;
 const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const moment = require('moment');
+
 
 const signup = (req,res) => {
     User.create({
@@ -18,7 +22,7 @@ const signup = (req,res) => {
         verification_key: otp.makeid(12),
         is_verified : 1,
         role:1
-    }).then(user => {
+    }).then(async user => {
       const userid = user.id;
         Worker.create({
             servicable_pincode: req.body.servicable_pincode,
@@ -46,9 +50,36 @@ const signup = (req,res) => {
 
 };
 
-const CreateService = (req,res) => {
-    console.log("Fall to createService controller");
+const CreateService = async (req,res) => {
+    const userId = req.userId;
+    const WorkerId = await getWID.getWid(userId);
+    Service.create({
+        service_name: req.body.service_name,
+        service_charge:req.body.service_charge,
+        service_description: req.body.service_description,
+        start_time: req.body.start_time,  //  9:30 AM
+        close_time: req.body.close_time, // 
+        estimate_time: req.body.estimate_time,
+        category_id: req.body.category_id,
+        subcategory_id: req.body.subcategory_id,
+        servicable_city_id:req.body.city_id,
+        servicable_pincode: req.body.servicable_pincode,
+        wid:WorkerId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    }).then(service => {
+        if(service){
+            return res.status(200).send({
+                status:true,
+                message:"Service Listed Succesfuly",
+                data: service
+            });
+        }
+    });
 };
+
+
+
 
 module.exports = {
     signup,
