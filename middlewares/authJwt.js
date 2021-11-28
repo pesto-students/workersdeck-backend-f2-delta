@@ -4,27 +4,33 @@ const db = require("../models");
 const User = db.users;
 
 verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+  const token = req.headers.authorization;
+    // let token = req.headers["x-access-token"];
   
     if (!token) {
       return res.status(403).send({
-        message: "No token provided!"
+        status:false,
+        message: "No token provided!",
+        data: null
       });
     }
   
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err) {
         return res.status(401).send({
-          message: "Unauthorized!"
+          status:false,
+          message: "Unauthorized Access!",
+          data: null
         });
       }
       req.userId = decoded.id;
       next();
     });
   };
-
+  
 
   const authJwt = {
     verifyToken: verifyToken,
   };
+
   module.exports = authJwt;
