@@ -6,6 +6,7 @@ const serviceListValidation = joi.object({
      city: joi.string().alphanum().trim(true).required(),
 });
 
+
 module.exports = {
     serviceListValidation,
     errorFunction

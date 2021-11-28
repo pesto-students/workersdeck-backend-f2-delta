@@ -46,6 +46,9 @@ const getCategories = (req,res) => {
 
 const showWorkersLists = (req,res) => {
     const {city,pincode} = req.query;
+    City.findOne({name: city}).then(result => {
+        const cityid = result.id;
+    });
 };
 
 
