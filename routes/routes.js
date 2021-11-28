@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/auth.controller');
-const listingController = require('../controllers/listing.controller');
-const workersController = require('../controllers/workers.controller');
+const {authController,listingController,workersController,userController} = require('../controllers/');
 const { verifySignUp,authJwt,workerSignup,isWorker } = require("../middlewares");
 
 
@@ -15,6 +13,7 @@ router.post(
     authController.signup
   );
 router.post('/user/signin', authController.signin);
+router.post("/user/reset-password",authController.resetPassword);
 router.get(
   "/user/myprofile",
   [
@@ -22,16 +21,27 @@ router.get(
   ],
   authController.myprofile
 );
+
 router.post(
-  "/user/reset-password",
-  authController.resetPassword
+  "/user/save/address",
+  [
+    authJwt.verifyToken,
+  ],
+  userController.saveAddress
+);
+
+router.delete(
+  "/user/delete/address",
+  [
+    authJwt.verifyToken,
+  ],
+  userController.deleteAddress
 );
 
 // Workers api
 router.post('/worker/signup',
 [
   verifySignUp.checkDuplicateMobileOrEmail,
-  workerSignup.validateCity,
   workerSignup.validateCategory,
   workerSignup.validateSubCategory,
 ],
@@ -42,14 +52,18 @@ workersController.signup
 router.post('/worker/createservice',
 [
   authJwt.verifyToken,
-  isWorker.isWorker
+  isWorker.isWorker,
+  workerSignup.validateCity,
+  workerSignup.validateCategory,
+  workerSignup.validateSubCategory,
 ],
 workersController.CreateService
 );
 
+router.get('/services/list',listingController.showWorkersLists);
+
+// Other APIs
 router.get('/cities',listingController.getCities);
 router.get('/categories',listingController.getCategories);
-router.get('/listing',listingController.showWorkersLists);
-
 
 module.exports = router;

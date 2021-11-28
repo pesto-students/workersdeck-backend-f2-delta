@@ -19,11 +19,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       start_time: {
-        type: Sequelize.DATE,
+        type: Sequelize.TIME,
         //
       },
       close_time: {
-        type: Sequelize.DATE,
+        type: Sequelize.TIME,
       },
       estimate_time: {
         type: Sequelize.STRING,

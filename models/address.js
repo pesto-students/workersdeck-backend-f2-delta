@@ -14,7 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Address.init({
-    address: DataTypes.STRING
+    uid: DataTypes.INTEGER,
+    address: DataTypes.STRING,
+    type:{
+      type: DataTypes.ENUM,
+      values: ['home', 'office', 'other']
+    },
+    pin_code: DataTypes.CHAR(6),
+    name:DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Address',
