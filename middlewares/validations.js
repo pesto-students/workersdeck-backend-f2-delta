@@ -1,13 +1,36 @@
-const joi = require("joi");
-const errorFunction = require("../../utils/errorFunction");
+const db = require("../models");
+const Address = db.Address;
 
-const serviceListValidation = joi.object({
-     pin_code: joi.min(5).max(6).trim(true).required(),
-     city: joi.string().alphanum().trim(true).required(),
-});
 
+
+const checkIfUserAddressIsValid = (req, res, next) =>{
+
+    if(!req.body.address_id){
+        return res.status(406).send({
+            status:false,
+            message: "Invalid Address field",
+            data: null
+          });
+    }
+
+    Address.findOne({
+        where:{
+            id:req.body.address_id
+        }
+    }).then(addressResult =>{
+        if(addressResult){
+            next();
+        }else{
+            return res.status(404).send({
+                status:false,
+                message: "Incorrect Address",
+                data: null
+              });
+        }
+    })
+
+};
 
 module.exports = {
-    serviceListValidation,
-    errorFunction
+    checkIfUserAddressIsValid : checkIfUserAddressIsValid
 }

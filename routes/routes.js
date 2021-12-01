@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {authController,listingController,workersController,userController,bookingController} = require('../controllers/');
-const { verifySignUp,authJwt,workerSignup,isWorker,BookableService} = require("../middlewares");
+  const { verifySignUp,authJwt,workerSignup,isWorker,serviceIsBookable,ReqValidations} = require("../middlewares");
 
 
 // Authentication API
@@ -67,8 +67,10 @@ router.get('/services/list',listingController.showWorkersLists);
 router.post('/service/book/new',
 [
   authJwt.verifyToken,
+  serviceIsBookable.checkIfBookable,
+  ReqValidations.checkIfUserAddressIsValid
 ],
-workersController.CreateService
+bookingController.createNewBooking
 );
 
 
