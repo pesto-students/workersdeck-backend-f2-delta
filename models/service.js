@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     servicable_city_id: DataTypes.INTEGER,
     servicable_pincode : DataTypes.CHAR,
     wid: DataTypes.INTEGER,
+    status:DataTypes.CHAR(1),
 
   }, {
     sequelize,
