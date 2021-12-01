@@ -1,23 +1,37 @@
-const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
 const db = require("../models");
 const Service = db.Service;
+const Op = db.Sequelize.Op;
 
-const checkIfBookable = (req, res,next) => {
-    
+
+
+const checkIfBookable = (req,res,next) => {
+
+    if(!req.body.service_id){
+        return res.status(406).send({
+            status:false,
+            message: "Invalid Service field",
+            data: null
+          });
+    }
     Service.findOne({
-        attributes: ['id','status'],
-        where:{
-            id: req.params.service_id,
+        where: {
+            id: req.body.service_id,
+            status:'1',
         }
     }).then(serviceResult => {
         if(serviceResult){
             next();
         }else{
-            return res.status(404).send({status:false, message:'Invalid Booking Request',data:null});
+            return res.status(406).send({
+                status:false,
+                message: "Worker Not Accepting any booking!",
+                data:null,
+            });
         }
     });
 
 }
 
-module.exports = checkIfBookable;
+module.exports ={
+    checkIfBookable: checkIfBookable
+}

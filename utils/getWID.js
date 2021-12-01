@@ -21,18 +21,20 @@ const getWid = (uid) => {
     });
   };
 
-  const getWIDbyServiceID = (service_id) => {
+    const getWIDbyServiceID = (service_id) => {
 
     return new Promise((resolve, reject) => {
       Service.findOne({
-        attributes: ['id'],
-        where:{
-          id:service_id
+        attributes: ['id', 'wid'],
+        where: {
+          id: service_id
         }
       }).then(serviceResult => {
-        if(serviceResult){
-          resolve(serviceResult.id);
-        }else{
+        if (serviceResult) {
+          // return worker.id;
+          resolve(serviceResult.wid);
+        } else {
+          //return null;
           reject(null);
         }
       });
