@@ -1,6 +1,6 @@
 const db = require("../models");
 const Worker = db.WorkersProfile;
-const User = db.users;
+const Service = db.Service;
 
 const getWid = (uid) => {
     return new Promise((resolve, reject) => {
@@ -21,7 +21,28 @@ const getWid = (uid) => {
     });
   };
 
+    const getWIDbyServiceID = (service_id) => {
+
+    return new Promise((resolve, reject) => {
+      Service.findOne({
+        attributes: ['id', 'wid'],
+        where: {
+          id: service_id
+        }
+      }).then(serviceResult => {
+        if (serviceResult) {
+          // return worker.id;
+          resolve(serviceResult.wid);
+        } else {
+          //return null;
+          reject(null);
+        }
+      });
+    });
+
+  }
 
 module.exports ={
     getWid,
+    getWIDbyServiceID
 }

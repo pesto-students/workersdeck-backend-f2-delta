@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {authController,listingController,workersController,userController} = require('../controllers/');
-const { verifySignUp,authJwt,workerSignup,isWorker } = require("../middlewares");
+const {authController,listingController,workersController,userController,bookingController} = require('../controllers/');
+  const { verifySignUp,authJwt,workerSignup,isWorker,serviceIsBookable,ReqValidations} = require("../middlewares");
 
 
 // Authentication API
@@ -61,6 +61,18 @@ workersController.CreateService
 );
 
 router.get('/services/list',listingController.showWorkersLists);
+
+// Book New service
+
+router.post('/service/book/new',
+[
+  authJwt.verifyToken,
+  serviceIsBookable.checkIfBookable,
+  ReqValidations.checkIfUserAddressIsValid
+],
+bookingController.createNewBooking
+);
+
 
 // Other APIs
 router.get('/cities',listingController.getCities);
