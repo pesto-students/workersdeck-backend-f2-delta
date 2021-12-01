@@ -60,7 +60,11 @@ router.post('/worker/createservice',
 workersController.CreateService
 );
 
-router.get('/services/list',listingController.showWorkersLists);
+router.get('/services/list',
+[
+  ReqValidations.checkValidCity
+],
+listingController.showWorkersLists);
 
 // Book New service
 
@@ -73,9 +77,19 @@ router.post('/service/book/new',
 bookingController.createNewBooking
 );
 
+router.get('/service/get/availability',
+[
+  authJwt.verifyToken,
+  serviceIsBookable.checkIfBookable,
+],
+bookingController.getTimeAvailability
+);
+
+
 
 // Other APIs
 router.get('/cities',listingController.getCities);
 router.get('/categories',listingController.getCategories);
+router.get('/subcategories',listingController.getSubCategories);
 
 module.exports = router;

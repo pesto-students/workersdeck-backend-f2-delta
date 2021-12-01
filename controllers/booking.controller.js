@@ -1,5 +1,6 @@
 const db = require("../models");
 const config = require("../config/auth.config");
+var moment = require('moment');  
 const Op = db.Sequelize.Op;
 const getWID = require('../utils/getWID');
 const Booking = db.Booking;
@@ -26,9 +27,12 @@ const createNewBooking = async (req, res) => {
         message: "Service Booked Succesfuly",
         data: bookingResult,
       });
-
     } else {
-
+        return res.status(200).send({
+            status: false,
+            message: "Unable to book service",
+            data: bookingResult,
+          });
     }
   }).catch(err => {
     return res.status(500).send({
@@ -61,6 +65,26 @@ const getServiceAmount = (service_id) => {
 
 }
 
+const getTimeAvailability = (req,res) => {
+    const {service_id} = req.body;
+    const today = moment().format("YYYY-MM-DD");
+    console.log("getTimeAvailability is working",service_id);
+    console.log();
+}
+
+const getTodaysBookingData = (service_id) => {
+
+    return new Promise((resolve, reject) => {
+
+        Service.findAll({
+            attributes: ['id', 'booking_time','booking_date'],
+        });
+
+    });
+
+}
+
 module.exports = {
   createNewBooking: createNewBooking,
+  getTimeAvailability:getTimeAvailability
 }
