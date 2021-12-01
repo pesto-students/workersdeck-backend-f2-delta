@@ -1,5 +1,6 @@
 const db = require("../models");
 const Address = db.Address;
+const City = db.City;
 
 
 
@@ -31,6 +32,28 @@ const checkIfUserAddressIsValid = (req, res, next) =>{
 
 };
 
+const checkValidCity = (req,res,next) =>{
+    const city = req.query.city;
+    City.findOne({
+        where:{
+            name:city,
+        }
+    }).then(cityResult => {
+        if(cityResult){
+            req.city_id =  cityResult.id;
+            next();
+        }else{
+            return  res.status(404).send({
+                status:false,
+                message:"City Not Found",
+                data:null
+            });
+        }
+    });
+
+}
+
 module.exports = {
-    checkIfUserAddressIsValid : checkIfUserAddressIsValid
+    checkIfUserAddressIsValid : checkIfUserAddressIsValid,
+    checkValidCity:checkValidCity
 }
