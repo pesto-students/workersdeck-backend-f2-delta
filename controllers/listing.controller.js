@@ -93,7 +93,8 @@ const showWorkersLists =  async (req,res) => {
             subCategoriesData = subCatResult;
         }
       });
-      const [results, metadata] = await db.sequelize.query("select Services.*,WorkersProfile.* from Services left join WorkersProfile on Services.wid = WorkersProfile.id");
+    //   select Public.Services.*,Public.WorkersProfile.* from Public.Services left join Public.WorkersProfile on Public.Services.wid = Public.WorkersProfile.id;
+      const [results, metadata] = await db.sequelize.query("select Public.Services.*,Public.WorkersProfile.* from Public.Services left join Public.WorkersProfile on Public.Services.wid = Public.WorkersProfile.id");
       console.log(results);
     //   Back to this page
     
