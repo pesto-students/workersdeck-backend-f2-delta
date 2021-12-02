@@ -1,5 +1,6 @@
 const db = require("../models");
 const config = require("../config/auth.config");
+var moment = require('moment');  
 const Op = db.Sequelize.Op;
 const getWID = require('../utils/getWID');
 const Booking = db.Booking;
@@ -26,9 +27,12 @@ const createNewBooking = async (req, res) => {
         message: "Service Booked Succesfuly",
         data: bookingResult,
       });
-
     } else {
-
+        return res.status(200).send({
+            status: false,
+            message: "Unable to book service",
+            data: bookingResult,
+          });
     }
   }).catch(err => {
     return res.status(500).send({
@@ -61,6 +65,65 @@ const getServiceAmount = (service_id) => {
 
 }
 
+const getTimeAvailability = async (req,res) => {
+    const service_id = req.query.service_id;
+    const today = moment().format("YYYY-MM-DD");
+    var estimate_time = 60;
+    var serviceInfo = {};
+    var start_time = '10:30:00';
+    var close_time = '18:30:00';
+    var time_slots = [];
+    await Service.findOne({
+      where:{
+        id:service_id,
+      }
+    }).then(serviceResult => {
+      serviceInfo = serviceResult;
+      estimate_time = parseInt(serviceResult.estimate_time);
+      start_time = serviceResult.start_time;
+      close_time = serviceResult.close_time;
+    });
+    time_slots = await getTodaysBookingSlots(start_time,close_time,estimate_time);
+    res.status(200).send({
+      status:true,
+      message:"Time slots fetch successfully",
+      data:{
+        start_time:start_time,
+        close_time:close_time,
+        time_slots:time_slots,
+        todays_date:today
+      }
+    });
+}
+
+
+const getTodaysBookingSlots = (start_time,close_time,est_time) => {
+    est_time = est_time + 30; //add extra 30 minutes in estimate time for next request
+    return new Promise((resolve, reject) => {
+
+      var startTime = moment(start_time, 'HH:mm:ss');
+      var endTime = moment(close_time, 'HH:mm:ss');
+  
+      if( endTime.isBefore(startTime) ){
+        endTime.add(1, 'day');
+      }
+
+      var timeStops = [];
+
+      while(startTime <= endTime){
+        timeStops.push(new moment(startTime).format('HH:mm:ss'));
+        startTime.add(est_time, 'minutes');
+      }
+      if(timeStops.length > 0){
+        resolve(timeStops);
+      }else{
+        reject(timeStops);
+      }
+    });
+
+}
+
 module.exports = {
   createNewBooking: createNewBooking,
+  getTimeAvailability:getTimeAvailability
 }

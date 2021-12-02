@@ -43,7 +43,13 @@ const deleteAddress = (req, res) => {
     })
 }
 
+const getBookingHistory = (req,res) => {
+    const type = req.params.type;
+  
+}
+
 module.exports = {
     saveAddress,
-    deleteAddress
+    deleteAddress,
+    getBookingHistory
 }
